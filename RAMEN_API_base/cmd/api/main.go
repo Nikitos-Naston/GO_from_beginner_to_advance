@@ -12,7 +12,7 @@ var (
 	configPath string
 )
 
-func inti() {
+func init() {
 	flag.StringVar(&configPath, "path", "configs/api.toml", "path to config file")
 
 }
