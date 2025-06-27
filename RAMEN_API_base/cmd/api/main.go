@@ -19,12 +19,12 @@ func init() {
 
 func main() {
 	flag.Parse()
-	log.Println("Hi")
 
 	//server inti
 	config := api.NewConfig()
 
 	_, err := toml.DecodeFile(configPath, config)
+	log.Println("File config:", config.Storage)
 	if err != nil {
 		log.Println("can not find configs file, using default values", err)
 	}
