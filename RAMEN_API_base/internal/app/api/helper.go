@@ -2,8 +2,11 @@ package api
 
 import (
 	"learning_GO/RAMEN_API_base/storage"
+	"log"
 	"net/http"
+	"os"
 
+	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
 )
 
@@ -30,4 +33,21 @@ func (a *API) configurStorageField() error {
 	}
 	a.storage = storage
 	return nil
+}
+
+func (c *Config) ConfigurateWithEnvFile(conf string) error {
+	err := godotenv.Load(conf)
+	if err != nil {
+		log.Println("Cound not find .env file:", err)
+		return err
+	}
+	port := os.Getenv("app_port")
+	logger_level := os.Getenv("logger_level")
+	database_uri := os.Getenv("database_uri")
+
+	c.BinAddr = ":" + port
+	c.LoggerLevel = logger_level
+	c.Storage.DatabaseURI = database_uri
+	return nil
+
 }
