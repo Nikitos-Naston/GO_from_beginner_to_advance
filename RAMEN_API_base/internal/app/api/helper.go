@@ -3,11 +3,14 @@ package api
 import (
 	"learning_GO/RAMEN_API_base/storage"
 	"log"
-	"net/http"
 	"os"
 
 	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
+)
+
+var (
+	prefix string = "/api/v1"
 )
 
 func (a *API) configureLoggerField() error {
@@ -20,9 +23,11 @@ func (a *API) configureLoggerField() error {
 }
 
 func (a *API) configureRouterField() {
-	a.router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Hello! This is REST api!"))
-	})
+	a.router.HandleFunc(prefix+"/arcticles", a.GetAllArcticles).Methods("GET")
+	a.router.HandleFunc(prefix+"/arcticles/{id}", a.GetArcticalById).Methods("GET")
+	a.router.HandleFunc(prefix+"/arcticles/{id}", a.DeleteArcticalById).Methods("DELETE")
+	a.router.HandleFunc(prefix+"/arcticles", a.PostArcticle).Methods("POST")
+	a.router.HandleFunc(prefix+"/user/registr", a.PostUserRegistr).Methods("POST")
 }
 
 func (a *API) configurStorageField() error {
