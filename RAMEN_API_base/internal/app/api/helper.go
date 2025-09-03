@@ -1,8 +1,10 @@
 package api
 
 import (
+	"learning_GO/RAMEN_API_base/internal/middleware"
 	"learning_GO/RAMEN_API_base/storage"
 	"log"
+	"net/http"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -24,10 +26,13 @@ func (a *API) configureLoggerField() error {
 
 func (a *API) configureRouterField() {
 	a.router.HandleFunc(prefix+"/arcticles", a.GetAllArcticles).Methods("GET")
-	a.router.HandleFunc(prefix+"/arcticles/{id}", a.GetArcticalById).Methods("GET")
+
+	// До JWT a.router.HandleFunc(prefix+"/arcticles/{id}", a.GetArcticalById).Methods("GET")
+	a.router.Handle(prefix+"/arcticles/{id}", middleware.JwtMiddleware.Handler(http.HandlerFunc(a.GetArcticalById))).Methods("GET")
 	a.router.HandleFunc(prefix+"/arcticles/{id}", a.DeleteArcticalById).Methods("DELETE")
 	a.router.HandleFunc(prefix+"/arcticles", a.PostArcticle).Methods("POST")
 	a.router.HandleFunc(prefix+"/user/registr", a.PostUserRegistr).Methods("POST")
+	a.router.HandleFunc(prefix+"/user/auth", a.PostToAuth).Methods("POST")
 }
 
 func (a *API) configurStorageField() error {

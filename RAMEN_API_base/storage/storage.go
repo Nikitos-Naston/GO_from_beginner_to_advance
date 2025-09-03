@@ -44,7 +44,7 @@ func (s *Storage) User() *UserRepository {
 	s.userRepository = &UserRepository{
 		storage: s,
 	}
-	return nil
+	return s.userRepository
 }
 
 func (s *Storage) Article() *ArcticleRepository {
@@ -54,5 +54,5 @@ func (s *Storage) Article() *ArcticleRepository {
 	s.arcticleRepository = &ArcticleRepository{
 		storage: s,
 	}
-	return nil
+	return s.arcticleRepository
 }
